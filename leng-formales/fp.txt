@@ -1,0 +1,109 @@
+Def max = > -> 1;2
+Def max_seq = /max
+Def first = 1
+
+Def min = > -> 2;1
+Def minimax = /min o @max_seq
+
+Def pertenece = /or o @eq o distl
+
+Def un_componente = eq o [~1, length o id]
+
+Def funrec = < o [1, ~1] -> 2;funrec o [- o  [1, ~1], apndl] 
+Def iota = funrec o [id, ~<>]
+
+Def es_par = /(not o 2) o apndr o [iota o id, ~T]
+Def seq_par = es_par o length
+
+Def pertenece = /or o @eq o distl
+Def union = /(pertenece -> 2;apndl) o apndr
+
+Def interseccion_filter = pertenece o 1 -> apndl o [1 o 1, 2];2
+Def interseccion = /interseccion_filter o apndr o [distr, ~<>]
+
+Def diferencia_filter = (pertenece o 1) -> 2;(apndl o [1 o 1, 2])
+Def diferencia = /diferencia_filter o apndr o [distr, ~<>]
+
+Def diferencia_sim = union o [diferencia, diferencia o reverse]
+
+Def max_func = max_seq o @B o iota
+
+Def concatenar = /apndl o apndr
+Def planchar = /(atom o 1 -> apndl;concatenar) o apndr o [id, ~<>]
+
+Def concatenar_sequencias = concatenar o @planchar
+
+Def invertir_total = @(atom -> id;reverse) o reverse
+
+Def resta_cuadrado = * o [id, id] o -
+Def dist_cuadrado = /+ o @resta_cuadrado o trans
+
+Def elevar = /* o @1 o distl o [1, iota o 2]
+
+Def multiplicar_sec = @* o distl
+Def producto_matriz_por_escalar = @multiplicar_sec o distl
+
+Def eliminar_vacio = /(null o 1 ->2;apndl) o apndr o [id, ~<>]
+
+Def mayor_a_0 = > o [id, ~0]
+
+Def filtrar_pares = eliminar_vacio o @(es_par o 1 ->2;~<>)
+
+Def filtrar_mayores_a_0 = eliminar_vacio o @(mayor_a_0 -> id;~<>)
+
+Def map_indexed = trans o [iota o length, id]
+
+Def sum_positivos_columnas_pares = /+ o filtrar_mayores_a_0 o planchar o filtrar_pares o map_indexed 
+
+Def selector_izq = [2 o 1, 1 o 1, map_indexed o 2]
+
+Def seleccionar = 1 o eliminar_vacio o @(eq o [1, 1 o 2] -> 2 o 2;~<>) o distl o [1, map_indexed o 2]
+
+Def selector_izq = /seleccionar o [2 o 1, 1 o 1, 2]
+
+Def generar_escalera_n = @iota o iota
+
+Def repetir_n_veces = @1 o distl o [1, iota o 2]
+
+Def eliminar_repetidos = union o [id id]
+
+Def equipos_invictos = eliminar_repetidos o diferencia o trans 
+
+Def equipos_perdedores = eliminar_repetidos o diferencia o reverse o trans 
+
+Def vict = 1 o trans
+Def derr = 2 o trans
+Def coinciden = eq -> ~1;~0
+Def contar = [1, /+ o @coinciden o distl]
+Def equipos = eliminar_repetidos o union o trans
+Def contar_vic = contar o distl o [equipos vict]
+Def contar_derr = @contar o distl o [equipos, derr]
+Def elegir_mayor = > o [2 o 1, 2 o 2] -> 1 o 1;~<>
+Def mas_ganaron = eliminar_vacio o @elegir_mayor o trans o [contar_vic, contar_derr]
+
+Def elegir_menor = < o [2 o 1, 2 o 2] -> 1 o 1;~<>
+Def mas_perdieron = eliminar_vacio o @elegir_menor o trans o [contar_vic, contar_derr]
+
+Def elegir_igual = eq o [2 o 1, 2 o 2] -> 1 o 1;~<>
+Def mas_perdieron = eliminar_vacio o @elegir_igual o trans o [contar_vic, contar_derr]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

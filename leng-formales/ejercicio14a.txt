@@ -1,0 +1,16 @@
+Def pertenece = /or o @eq o distl
+Def pertenece_valor = pertenece -> ~<>;1
+Def eliminar_vacio = /(null o 1 -> 2;apndl) o apndr o [id, ~<>]
+Def diferencia = eliminar_vacio o @pertenece_valor o distr
+Def union = /(pertenece -> 2;apndl) o apndr
+Def eliminar_repetidos = union o [id id]
+Def equipos_invictos = eliminar_repetidos o diferencia o [@1, @2]
+equipos_invictos: <<A B> <B C> <A C> <D E>>
+
+Def funrec = (<o [1, ~1] ->2;funrec o [ - o [1, ~1], apndl])
+Def iota = funrec o [id, ~<>]
+Def generar_estructura = apndr o [reverse  o 1, 2]
+Def generar = distl o [1, trans o [iota o length o 2, 2]]
+Def sacar= eq o [1, 1 o 2] -> 2 o 2; ~<>
+Def seleccionar= 1 o eliminar_vacio o @sacar o generar
+Def seleccionar_entero= /seleccionar o generar_estructura

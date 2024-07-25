@@ -1,0 +1,51 @@
+
+(defn generar_fila_triangular [fila]
+  (concat (vec (repeat (first fila) 0)) (nthrest (second fila) (first fila))))
+
+(defn matriz_triangulo_superior [matriz]
+  (map generar_fila_triangular (map-indexed list matriz))
+)
+
+(println (matriz_triangulo_superior (map list '(1 1 2) '(1 5 9) '(7 8 2))))
+
+(defn generar_fila_diagonal [fila]
+  (concat (vec (repeat (first fila) 0)) (list (nth (second fila) (first fila)))
+          (vec (repeat (- (count fila) (first fila)) 0))))
+
+(defn matriz_diagonal [matriz]
+  (map generar_fila_diagonal (map-indexed list matriz))
+)
+
+(println (matriz_diagonal (map list '(1 1 2) '(1 5 9) '(7 8 2))))
+
+(defn _generar_fila_triangular_rec [lista fila_act]
+  (cond
+    (= (count lista) 0) ()
+    :else (cons
+           (concat
+            (vec (repeat fila_act 0))
+            (nthrest (first lista) fila_act))
+           (_generar_fila_triangular_rec (rest lista) (inc fila_act)))))
+
+(defn generar_fila_triangular_rec [lista] 
+  (_generar_fila_triangular_rec lista 0)  
+)
+
+(println (generar_fila_triangular_rec (map list '(1 1 2) '(1 5 9) '(7 8 2))))
+
+(defn _generar_fila_diagonal_rec [lista fila_act]
+  (cond
+    (= (count lista) 0) ()
+    :else (cons
+           (concat
+              (vec (repeat fila_act 0))
+              (list (nth (first lista) fila_act))
+              (vec (repeat (- (count (first lista)) (inc fila_act)) 0))
+            )
+           (_generar_fila_diagonal_rec (rest lista) (inc fila_act)))))
+
+(defn generar_fila_diagonal_rec [lista] 
+  (_generar_fila_diagonal_rec lista 0)  
+)
+
+(println (generar_fila_diagonal_rec (map list '(1 1 2) '(1 5 9) '(7 8 2))))
